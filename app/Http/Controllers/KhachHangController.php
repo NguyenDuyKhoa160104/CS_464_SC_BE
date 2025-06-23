@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SanPham;
+use App\Models\KhachHang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SanPhamController extends Controller
+class KhachHangController extends Controller
 {
     public function getData()
     {
-        $data = SanPham::get();
+        $data = KhachHang::get();
 
         return response()->json([
             'data'  => $data
@@ -22,19 +22,15 @@ class SanPhamController extends Controller
         $login = Auth::guard('sanctum')->user();
         if ($login) {
             if ($login->tinh_trang == 1) {
-                SanPham::create([
-                    "id_danh_muc"               => $request->id_danh_muc,
-                    "ten_san_pham"              => $request->ten_san_pham,
-                    "gia_san_pham"              => $request->gia_san_pham,
-                    "mo_ta"                     => $request->mo_ta,
-                    "mo_ta_chi_tiet"            => $request->mo_ta_chi_tiet,
-                    "hinh_anh"                  => $request->hinh_anh,
-                    "tinh_trang"                => 1,
+                KhachHang::create([
+                    "ten_khach_hang"        => $request->ten_khach_hang,
+                    "email"                 => $request->email,
+                    "so_dien_thoai"         => $request->so_dien_thoai,
+                    "tinh_trang"            => 1
                 ]);
-
                 return response()->json([
                     'status'  => true,
-                    'message' => "Đã thêm mới sản phẩm thành công!"
+                    'message' => "Đã thêm mới khách hàng thành công!"
                 ]);
             } else {
                 return response()->json([
@@ -50,19 +46,17 @@ class SanPhamController extends Controller
         $login = Auth::guard('sanctum')->user();
         if ($login) {
             if ($login->tinh_trang == 1) {
-                $san_pham = SanPham::where("id", $request->id)->first();
-                if ($san_pham) {
-                    $san_pham->tinh_trang = !$san_pham->tinh_trang;
-
-                    $san_pham->save();
-
+                $khach_hang = KhachHang::where("id", $request->id)->first();
+                if ($khach_hang) {
+                    $khach_hang->tinh_trang = !$khach_hang->tinh_trang;
+                    $khach_hang->save();
                     return response()->json([
                         'status'  => true,
                     ]);
                 } else {
                     return response()->json([
-                        'status'        => false,
-                        'message'       => 'Sản phẩm không tồn tại!'
+                        'status'  => false,
+                        'message' => "Khách hàng không tồn tại!"
                     ]);
                 }
             } else {
@@ -74,22 +68,22 @@ class SanPhamController extends Controller
         }
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request)
     {
         $login = Auth::guard('sanctum')->user();
         if ($login) {
             if ($login->tinh_trang == 1) {
-                SanPham::where("id", $request->id)->update([
-                    "id_danh_muc"               => $request->id_danh_muc,
-                    "ten_san_pham"              => $request->ten_san_pham,
-                    "gia_san_pham"              => $request->gia_san_pham,
-                    "mo_ta"                     => $request->mo_ta,
-                    "mo_ta_chi_tiet"            => $request->mo_ta_chi_tiet,
-                    "hinh_anh"                  => $request->hinh_anh,
+                KhachHang::where("id", $request->id)->update([
+                    "ten_khach_hang"        => $request->ten_khach_hang,
+                    "email"                 => $request->email,
+                    "so_dien_thoai"         => $request->so_dien_thoai,
                 ]);
                 return response()->json([
-                    'status'        => true,
-                    'message'       => 'Đã cập nhật sản phẩm thành công!'
+                    'status'  => true,
+                    'message' => "Đã cập nhật khách hàng thành công!"
                 ]);
             } else {
                 return response()->json([
@@ -105,10 +99,10 @@ class SanPhamController extends Controller
         $login = Auth::guard('sanctum')->user();
         if ($login) {
             if ($login->tinh_trang == 1) {
-                SanPham::where("id", $request->id)->delete();
+                KhachHang::where("id", $request->id)->delete();
                 return response()->json([
-                    'status'        => true,
-                    'message'       => 'Đã xóa sản phẩm thành công!'
+                    'status'  => true,
+                    'message' => "Đã xóa khách hàng thành công!"
                 ]);
             } else {
                 return response()->json([
