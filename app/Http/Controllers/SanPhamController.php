@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DanhMuc;
 use App\Models\SanPham;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,13 +11,17 @@ class SanPhamController extends Controller
 {
     public function getData()
     {
-        //
+        $data = SanPham::get();
+
+        return response()->json([
+            'data'  => $data
+        ]);
     }
 
     public function store(Request $request)
     {
         $login = Auth::guard('sanctum')->user();
-        if($login) {
+        if ($login) {
             SanPham::create([
                 "id_danh_muc"               => $request->id_danh_muc,
                 "ten_san_pham"              => $request->ten_san_pham,

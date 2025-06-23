@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer("id_danh_muc");
             $table->string("ten_san_pham");
-            $table->string("gia_san_pham");
+            $table->integer("gia_san_pham");
             $table->text("mo_ta");
             $table->text("mo_ta_chi_tiet");
             $table->string("hinh_anh"); 
