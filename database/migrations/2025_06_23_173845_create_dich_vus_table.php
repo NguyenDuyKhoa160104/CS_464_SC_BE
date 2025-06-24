@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('dich_vus', function (Blueprint $table) {
             $table->id();
+            $table->string("ten_dich_vu");
+            $table->string("mo_ta_dich_vu");
+            $table->integer("gia_dich_vu");
+            $table->integer("thoi_luong")->comment("Tính theo phút");
+            $table->string("hinh_anh");
+            $table->integer("tinh_trang");
+            $table->integer("id_danh_muc");
             $table->timestamps();
         });
     }

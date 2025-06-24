@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DanhMucController;
+use App\Http\Controllers\DichVuController;
 use App\Http\Controllers\KhachHangController;
 use App\Http\Controllers\NhanVienController;
 use App\Http\Controllers\SanPhamController;
@@ -30,3 +31,10 @@ Route::post('/nhan-vien/khach-hang/create', [KhachHangController::class, 'store'
 Route::post('/nhan-vien/khach-hang/doi-trang-thai', [KhachHangController::class, 'changeStatus'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/khach-hang/update', [KhachHangController::class, 'update'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/khach-hang/delete', [KhachHangController::class, 'destroy'])->middleware("NhanVienMiddle");
+
+Route::get('/nhan-vien/dich-vu/data', [DichVuController::class, 'getData']);
+Route::post('/nhan-vien/dich-vu/create', [DichVuController::class, 'store'])->middleware("NhanVienMiddle");
+Route::post('/nhan-vien/dich-vu/doi-trang-thai', [DichVuController::class, 'changeStatus'])->middleware("NhanVienMiddle");
+Route::post('/nhan-vien/dich-vu/doi-trang-thai', [DichVuController::class, 'changeStatus'])->middleware("NhanVienMiddle");
+Route::post('/nhan-vien/dich-vu/update', [DichVuController::class, 'update'])->middleware("NhanVienMiddle");
+Route::post('/nhan-vien/dich-vu/delete', [DichVuController::class, 'destroy'])->middleware("NhanVienMiddle");
