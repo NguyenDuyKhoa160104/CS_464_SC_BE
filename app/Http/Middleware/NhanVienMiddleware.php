@@ -15,7 +15,9 @@ class NhanVienMiddleware
         if($tai_khoan_dang_dang_nhap && $tai_khoan_dang_dang_nhap instanceof \App\Models\NhanVien) {
             return $next($request);
         } else {
-            return response()->json("Bạn chưa đăng nhập tài khoản!");
+            return response()->json([
+                "message" => "Bạn chưa đăng nhập tài khoản!"
+            ]);
         }
     }
 }
