@@ -11,10 +11,26 @@ use Illuminate\Support\Facades\DB;
 class NhanVienController extends Controller
 {
 
+    public function kiemTraAdmin()
+    {
+        $login = Auth::guard('sanctum')->user();
+
+        if ($login && $login instanceof \App\Models\NhanVien) {
+            return response()->json([
+                'status'    =>  true
+            ]);
+        } else {
+            return response()->json([
+                'status'    =>  false,
+                'message'   =>  'Bạn cần đăng nhập hệ thống trước'
+            ]);
+        }
+    }
+
     public function getDataDangNhap()
     {
         $login = Auth::guard('sanctum')->user();
-        
+
         return response()->json([
             'data'    =>  $login
         ]);
@@ -76,7 +92,7 @@ class NhanVienController extends Controller
 
     public function logout()
     {
-        $login   = Auth::guard('sanctum')->user();
+        $login = Auth::guard('sanctum')->user();
         if ($login && $login instanceof \App\Models\NhanVien) {
             DB::table('personal_access_tokens')
                 ->where('id', $login->currentAccessToken()->id)->delete();
@@ -87,7 +103,7 @@ class NhanVienController extends Controller
         } else {
             return response()->json([
                 'status' => false,
-                'message' => "bạn chưa đăng nhập hệ thống!"
+                'message' => "Bạn chưa đăng nhập hệ thống!"
             ]);
         }
     }

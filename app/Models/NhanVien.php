@@ -18,6 +18,7 @@ class NhanVien extends Authenticatable
         "password",
         "ten_nhan_vien",
         "so_dien_thoai",
+        "hinh_anh",
         "tinh_trang",
         "id_quyen",
     ];

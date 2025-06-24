@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("password");
             $table->string("ten_nhan_vien");
             $table->string("so_dien_thoai");
+            $table->string("hinh_anh");
             $table->integer("tinh_trang");
             $table->integer("id_quyen")->comment("1:Quản lý, 0:Nhân viên");
             $table->timestamps();

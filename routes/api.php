@@ -13,6 +13,7 @@ Route::get('/nhan-vien/data', [NhanVienController::class, 'getData']);
 Route::get('/nhan-vien/data-dang-nhap', [NhanVienController::class, 'getDataDangNhap'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/dang-xuat', [NhanVienController::class, 'logout'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/create', [NhanVienController::class, 'store'])->middleware("NhanVienMiddle");
+Route::get('/kiem-tra-admin', [NhanVienController::class, 'kiemTraAdmin'])->middleware("NhanVienMiddle");
 
 Route::get('/nhan-vien/danh-muc/data', [DanhMucController::class, 'getData']);
 Route::post('/nhan-vien/danh-muc/create', [DanhMucController::class, 'store'])->middleware("NhanVienMiddle");
