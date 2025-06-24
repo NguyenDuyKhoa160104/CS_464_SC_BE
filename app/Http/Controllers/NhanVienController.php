@@ -32,6 +32,7 @@ class NhanVienController extends Controller
         $login = Auth::guard('sanctum')->user();
 
         return response()->json([
+            'status'  => true,
             'data'    =>  $login
         ]);
     }
@@ -73,7 +74,9 @@ class NhanVienController extends Controller
                 return response()->json([
                     'status'  => true,
                     'message' => "Đã đăng nhập thành công!",
-                    'token'   => $nhanVien->createToken('token_nhan_vien')->plainTextToken,
+                    'token_nhan_vien'   => $nhanVien->createToken('token_nhan_vien')->plainTextToken,
+                    'ten_nv'  => $nhanVien->ten_nhan_vien,
+                    'anh_nv'  => $nhanVien->hinh_anh
                 ]);
             } else {
                 return response()->json([
@@ -104,6 +107,26 @@ class NhanVienController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => "Bạn chưa đăng nhập hệ thống!"
+            ]);
+        }
+    }
+
+    public function logoutAll()
+    {
+        $login = Auth::guard('sanctum')->user();
+        if ($login && $login instanceof \App\Models\NhanVien) {
+            $ds_token = $login->tokens;
+            foreach ($ds_token as $key => $value) {
+                $value->delete();
+            }
+            return response()->json([
+                'status' => true,
+                'message' => "Bạn đã đăng xuất thành công!"
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => "bạn chưa đăng nhập hệ thống!"
             ]);
         }
     }

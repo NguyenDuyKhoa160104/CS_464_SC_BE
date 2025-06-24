@@ -8,12 +8,13 @@ use App\Http\Controllers\SanPhamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+Route::post('/nhan-vien/dang-xuat-all', [NhanVienController::class, 'logoutAll'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/dang-nhap', [NhanVienController::class, 'login']);
 Route::get('/nhan-vien/data', [NhanVienController::class, 'getData']);
 Route::get('/nhan-vien/data-dang-nhap', [NhanVienController::class, 'getDataDangNhap'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/dang-xuat', [NhanVienController::class, 'logout'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/create', [NhanVienController::class, 'store'])->middleware("NhanVienMiddle");
-Route::get('/kiem-tra-admin', [NhanVienController::class, 'kiemTraAdmin'])->middleware("NhanVienMiddle");
+Route::get('/kiem-tra-admin', [NhanVienController::class, 'kiemTraAdmin']);
 
 Route::get('/nhan-vien/danh-muc/data', [DanhMucController::class, 'getData']);
 Route::post('/nhan-vien/danh-muc/create', [DanhMucController::class, 'store'])->middleware("NhanVienMiddle");
