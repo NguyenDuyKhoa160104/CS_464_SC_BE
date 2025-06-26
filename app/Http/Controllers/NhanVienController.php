@@ -10,6 +10,39 @@ use Illuminate\Support\Facades\DB;
 
 class NhanVienController extends Controller
 {
+    public function changeStatus(Request $request)
+    {
+        $login = Auth::guard('sanctum')->user();
+        if ($login) {
+            if ($login->tinh_trang) {
+                if ($login->id_quyen == 1) {
+                    $nhan_vien = NhanVien::where("id", $request->id)->first();
+                    if ($nhan_vien) {
+                        $nhan_vien->tinh_trang = !$nhan_vien->tinh_trang;
+                        $nhan_vien->save();
+                        return response()->json([
+                            'status'  => true,
+                        ]);
+                    } else {
+                        return response()->json([
+                            'status'  => false,
+                            'message'       => 'Nhân viên không tồn tại!'
+                        ]);
+                    }
+                } else {
+                    return response()->json([
+                        'status'  => false,
+                        'message'       => 'Bạn không có quyền đổi tình trạng nhân viên!'
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'status'  => false,
+                    'message'       => 'Tài khoản của bạn đang tạm khóa!'
+                ]);
+            }
+        }
+    }
 
     public function kiemTraAdmin()
     {
@@ -22,7 +55,7 @@ class NhanVienController extends Controller
         } else {
             return response()->json([
                 'status'    =>  false,
-                'message'   =>  'Bạn cần đăng nhập hệ thống trước'
+                'message'   =>  'Bạn cần đăng nhập hệ thống trước!'
             ]);
         }
     }
@@ -50,13 +83,57 @@ class NhanVienController extends Controller
     {
         $login = Auth::guard('sanctum')->user();
         if ($login) {
-            return response()->json([
-                'status'  => true,
-            ]);
-        } else {
-            return response()->json([
-                'status'  => false,
-            ]);
+            if ($login->tinh_trang == 1) {
+                if ($login->id_quyen == 1) {
+                    NhanVien::create([
+                        "email"             => $request->email,
+                        "password"          => bcrypt($request->password),
+                        "ten_nhan_vien"     => $request->ten_nhan_vien,
+                        "so_dien_thoai"     => $request->so_dien_thoai,
+                        "hinh_anh"          => "",
+                        "tinh_trang"        => 1,
+                        "id_quyen"          => $request->id_quyen,
+                    ]);
+                    return response()->json([
+                        'status'  => true,
+                        'message'       => 'Đã thêm mới nhân viên thành công!'
+                    ]);
+                } else {
+                    return response()->json([
+                        'status'  => false,
+                        'message'       => 'Bạn không có quyền thêm nhân viên!'
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'status'  => false,
+                    'message'       => 'Tài khoản của bạn đang tạm khóa!'
+                ]);
+            }
+        }
+    }
+
+    public function update(Request $request)
+    {
+        $login = Auth::guard('sanctum')->user();
+        if ($login) {
+            if ($login->tinh_trang == 1) {
+                NhanVien::where("id", $request->id)->update([
+                    "email"                 => $request->email,
+                    "ten_nhan_vien"         => $request->ten_nhan_vien,
+                    "so_dien_thoai"         => $request->so_dien_thoai,
+                ]);
+
+                return response()->json([
+                    'status'    => true,
+                    'message'   => "Đã cập nhật nhân viên thành công!"
+                ]);
+            } else {
+                return response()->json([
+                    'status'    => false,
+                    'message'   => "Tài khoản của bạn đang tạm khóa!"
+                ]);
+            }
         }
     }
 
@@ -76,7 +153,8 @@ class NhanVienController extends Controller
                     'message' => "Đã đăng nhập thành công!",
                     'token_nhan_vien'   => $nhanVien->createToken('token_nhan_vien')->plainTextToken,
                     'ten_nv'  => $nhanVien->ten_nhan_vien,
-                    'anh_nv'  => $nhanVien->hinh_anh
+                    'anh_nv'  => $nhanVien->hinh_anh,
+                    'quyen_nv' => $nhanVien->id_quyen,
                 ]);
             } else {
                 return response()->json([

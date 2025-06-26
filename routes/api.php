@@ -14,9 +14,12 @@ Route::get('/nhan-vien/data', [NhanVienController::class, 'getData']);
 Route::get('/nhan-vien/data-dang-nhap', [NhanVienController::class, 'getDataDangNhap'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/dang-xuat', [NhanVienController::class, 'logout'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/create', [NhanVienController::class, 'store'])->middleware("NhanVienMiddle");
+Route::post('/nhan-vien/update', [NhanVienController::class, 'update'])->middleware("NhanVienMiddle");
+Route::post('/nhan-vien/doi-tinh-trang', [NhanVienController::class, 'changeStatus'])->middleware("NhanVienMiddle");
 Route::get('/kiem-tra-admin', [NhanVienController::class, 'kiemTraAdmin']);
 
 Route::get('/nhan-vien/danh-muc/data', [DanhMucController::class, 'getData']);
+Route::get('/nhan-vien/danh-muc/data-open', [DanhMucController::class, 'getDataOpen']);
 Route::post('/nhan-vien/danh-muc/create', [DanhMucController::class, 'store'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/danh-muc/doi-trang-thai', [DanhMucController::class, 'changeStatus'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/danh-muc/update', [DanhMucController::class, 'update'])->middleware("NhanVienMiddle");

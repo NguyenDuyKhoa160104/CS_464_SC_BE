@@ -17,6 +17,15 @@ class DanhMucController extends Controller
         ]);
     }
 
+    public function getDataOpen()
+    {
+        $data = DanhMuc::where("tinh_trang", 1)->get();
+
+        return response()->json([
+            'data'  => $data,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $login = Auth::guard('sanctum')->user();
