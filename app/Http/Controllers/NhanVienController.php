@@ -171,23 +171,23 @@ class NhanVienController extends Controller
         }
     }
 
-    public function logout()
-    {
-        $login = Auth::guard('sanctum')->user();
-        if ($login && $login instanceof \App\Models\NhanVien) {
-            DB::table('personal_access_tokens')
-                ->where('id', $login->currentAccessToken()->id)->delete();
-            return response()->json([
-                'status' => true,
-                'message' => "Bạn đã đăng xuất thành công!"
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => "Bạn chưa đăng nhập hệ thống!"
-            ]);
+        public function logout()
+        {
+            $login = Auth::guard('sanctum')->user();
+            if ($login && $login instanceof \App\Models\NhanVien) {
+                DB::table('personal_access_tokens')
+                    ->where('id', $login->currentAccessToken()->id)->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => "Bạn đã đăng xuất thành công!"
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Bạn chưa đăng nhập hệ thống!"
+                ]);
+            }
         }
-    }
 
     public function logoutAll()
     {
