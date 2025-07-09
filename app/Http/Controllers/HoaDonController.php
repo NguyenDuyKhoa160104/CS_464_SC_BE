@@ -2,64 +2,78 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChiTietHoaDon;
 use App\Models\HoaDon;
+use App\Models\SanPham;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class HoaDonController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $login = Auth::guard('sanctum')->user();
+        if (!$login) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Bạn chưa đăng nhập!'
+            ]);
+        }
+
+        if ($login->tinh_trang != 1) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Tài khoản của bạn đang tạm khóa!'
+            ]);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $hoa_don = HoaDon::create([
+                'ma_hoa_don'     => 'HD' . strtoupper(Str::random(6)),
+                'ten_khach_hang' => $request->ten_khach_hang,
+                'so_dien_thoai'  => $request->so_dien_thoai,
+                'tong_tien'      => $request->tong_tien,
+                'tinh_trang'     => 1,
+            ]);
+
+            foreach ($request->chi_tiet as $ct) {
+                ChiTietHoaDon::create([
+                    'id_hoa_don'   => $hoa_don->id,
+                    'id_san_pham'  => $ct['id_san_pham'],
+                    'so_luong'     => $ct['so_luong'],
+                    'don_gia'      => $ct['don_gia'],
+                ]);
+            }
+
+            DB::commit();
+            return response()->json([
+                'status' => true,
+                'message' => 'Tạo hóa đơn thành công!'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi server: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(HoaDon $hoaDon)
+    public function getData(Request $request)
     {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(HoaDon $hoaDon)
-    {
-        //
-    }
+        $hoa_don_list = HoaDon::with(['chiTiet.sanPham'])
+            ->orderBy('created_at', 'desc')
+            ->get(); // lấy toàn bộ dữ liệu, không phân trang
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, HoaDon $hoaDon)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(HoaDon $hoaDon)
-    {
-        //
+        return response()->json([
+            'status' => true,
+            'message' => 'Lấy danh sách hóa đơn thành công!',
+            'data' => $hoa_don_list
+        ]);
     }
 }

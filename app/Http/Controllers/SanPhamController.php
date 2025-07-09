@@ -16,6 +16,15 @@ class SanPhamController extends Controller
             'data'  => $data
         ]);
     }
+    
+    public function getDataOpen()
+    {
+        $data = SanPham::where("tinh_trang", 1)->get();
+
+        return response()->json([
+            'data'  => $data
+        ]);
+    }
 
     public function store(Request $request)
     {

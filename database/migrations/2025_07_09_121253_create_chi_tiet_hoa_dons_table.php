@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hoa_dons', function (Blueprint $table) {
+        Schema::create('chi_tiet_hoa_dons', function (Blueprint $table) {
             $table->id();
-            $table->string("ma_hoa_don")->unique();
-            $table->integer("id_khach_hang");
-            $table->integer("id_nhan_vien");
-            $table->string("ten_khach_hang")->nullable();
-            $table->integer("tong_tien")->default(0);
-            $table->string("trang_thai");
+            $table->integer('id_hoa_don');
+            $table->integer('id_san_pham');
+            $table->integer('so_luong')->default(1);
+            $table->integer('don_gia');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hoa_dons');
+        Schema::dropIfExists('chi_tiet_hoa_dons');
     }
 };

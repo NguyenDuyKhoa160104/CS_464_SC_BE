@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DanhMucController;
 use App\Http\Controllers\DichVuController;
+use App\Http\Controllers\HoaDonController;
 use App\Http\Controllers\KhachHangController;
 use App\Http\Controllers\NhanVienController;
 use App\Http\Controllers\SanPhamController;
@@ -26,6 +27,7 @@ Route::post('/nhan-vien/danh-muc/update', [DanhMucController::class, 'update'])-
 Route::post('/nhan-vien/danh-muc/delete', [DanhMucController::class, 'destroy'])->middleware("NhanVienMiddle");
 
 Route::get('/nhan-vien/san-pham/data', [SanPhamController::class, 'getData']);
+Route::get('/nhan-vien/san-pham/data-open', [SanPhamController::class, 'getDataOpen']);
 Route::post('/nhan-vien/san-pham/create', [SanPhamController::class, 'store'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/san-pham/doi-tinh-trang', [SanPhamController::class, 'changeStatus'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/san-pham/update', [SanPhamController::class, 'update'])->middleware("NhanVienMiddle");
@@ -43,3 +45,6 @@ Route::post('/nhan-vien/dich-vu/doi-trang-thai', [DichVuController::class, 'chan
 Route::post('/nhan-vien/dich-vu/doi-trang-thai', [DichVuController::class, 'changeStatus'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/dich-vu/update', [DichVuController::class, 'update'])->middleware("NhanVienMiddle");
 Route::post('/nhan-vien/dich-vu/delete', [DichVuController::class, 'destroy'])->middleware("NhanVienMiddle");
+
+Route::post('/nhan-vien/hoa-don/create', [HoaDonController::class, 'store'])->middleware("NhanVienMiddle");
+Route::get('/nhan-vien/hoa-don/data', [HoaDonController::class, 'getData']);
