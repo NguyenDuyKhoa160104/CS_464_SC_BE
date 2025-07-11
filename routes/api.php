@@ -48,3 +48,4 @@ Route::post('/nhan-vien/dich-vu/delete', [DichVuController::class, 'destroy'])->
 
 Route::post('/nhan-vien/hoa-don/create', [HoaDonController::class, 'store'])->middleware("NhanVienMiddle");
 Route::get('/nhan-vien/hoa-don/data', [HoaDonController::class, 'getData']);
+Route::post('/nhan-vien/hoa-don/doi-tinh-trang', [HoaDonController::class, 'changeStatus'])->middleware("NhanVienMiddle");

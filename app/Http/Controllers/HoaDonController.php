@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ChiTietHoaDon;
 use App\Models\HoaDon;
+use App\Models\KhachHang;
 use App\Models\SanPham;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +50,13 @@ class HoaDonController extends Controller
                 ]);
             }
 
+            KhachHang::create([
+                'ten_khach_hang' => $request->ten_khach_hang,
+                'so_dien_thoai'  => $request->so_dien_thoai,
+                'email'          => "",
+                'tinh_trang'     => 1,
+            ]);
+
             DB::commit();
             return response()->json([
                 'status' => true,
@@ -75,5 +83,24 @@ class HoaDonController extends Controller
             'message' => 'Lấy danh sách hóa đơn thành công!',
             'data' => $hoa_don_list
         ]);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $login = Auth::guard('sanctum')->user();
+        if ($login) {
+            if ($login->tinh_trang == 1) {
+                $hoa_don = HoaDon::where("id", $request->id)->first();
+                if ($hoa_don) {
+                    $hoa_don->tinh_trang = !$hoa_don->tinh_trang;
+                    $hoa_don->save();
+                    return response()->json(['status' => true,]);
+                } else {
+                    return response()->json(['status' => false, 'message' => "Khách hàng không tồn tại!"]);
+                }
+            } else {
+                return response()->json(['status' => false, 'message' => "Tài khoản của bạn đang tạm khóa!"]);
+            }
+        }
     }
 }
